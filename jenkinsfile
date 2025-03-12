@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clonar repositório') {
+            steps {
+                git branch: 'main', url: 'https://github.com/davidrogerfranco/testes-e2e-ebac-shop.git'
+            }
+        }
+
+        stage('Instalar dependências') {
+            steps {
+                bat 'npm install --prefix .'
+            }
+        }
+
+       stage('Executar serverest') {
+            steps {
+                bat 'start /B cmd /C "npm start --prefix ."'
+            }
+        }
+
+        stage('Executar testes') {
+            steps {
+                bat 'npm run cy:run --prefix .'
+            }
+        }
+    }
+}
